@@ -6,6 +6,10 @@ const port = 3000
 
 app.use(locationController)
 
+app.get('/', (req, res) => {
+	res.send('Hello World!')
+  })
+
 app.listen(port, () => {
 	console.log(`API listening on port ${port}, visit http://localhost:${port}/`)
 })
