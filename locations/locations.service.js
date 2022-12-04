@@ -23,8 +23,18 @@ async function addLocation(data){
 	}
 }
 
+async function updateLocation(id, update){
+	return Location.updateOne({_if:id}, update)
+}
+
+async function deleteLocation(id){
+    const location = await findOne(id)
+    return location.remove
+}
 
 module.exports.findAll = findAll
 module.exports.findOne = findOne
 module.exports.addLocation = addLocation
+module.exports.updateLocation = updateLocation
+module.exports.deleteLocation= deleteLocation
 

@@ -13,9 +13,9 @@ mongoose.connect(process.env.MONGO_URI).then(() => {console.log('Connected!') })
 
 app.use(locationController)
 
-/*app.get('/', (req, res) => {
+app.get('/', (req, res) => {
 	res.send('Hello World!')
-  })*/
+  })
 
 app.listen(port, () => {
 	console.log(`API listening on port ${port}, visit http://localhost:${port}/`)
