@@ -18,7 +18,10 @@ router.post('/locations', async (req, res) => {
 //Update: /locations/:id
 router.put('/locations/:id', async (req,res)=>{
 	try {
-		const location = await locationsService.updateLocation(req.params.id, {...req.body, endDate:new Date(req.body.endDate), startDate: new Date(req.body.startDate)})
+		console.log("Coucou")
+		//const location = await locationsService.updateLocation(req.params.id, {...req.body, endDate:new Date(req.body.endDate), startDate: new Date(req.body.startDate)})
+		console.log(req.body)
+		const location = await locationsService.updateLocation(req.params.id, req.body)
 		return res.status(200).send(location)
 	} catch(e) {
 		return res.status(400).send("Bad Request, Try again !")
@@ -45,7 +48,7 @@ router.get('/locations/:id', async (req, res) => {
 // Delete: /locations/:id
 router.delete('/locations/:id', async (req,res)=>{
     try{
-        const location = await locationsService.deleteLocation(req.params.id)
+        const location = await locationsService.deleteLocation(req.params['id'])
         return res.status(200).send(location)
     } catch(e) {
         return res.status(400).send("Bad Request, Try again !")
