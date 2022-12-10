@@ -17,4 +17,11 @@ async function checkPassword(username, password){
     return user 
 }
 
-module.exports = {register, checkPassword}
+async function findOne(id){
+	const user = await User.findById(id)
+	if (!user) throw new Error("User not found")
+	return user
+}
+
+
+module.exports = {register, checkPassword, findOne}
