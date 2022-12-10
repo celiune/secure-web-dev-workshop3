@@ -3,6 +3,8 @@
 
 const router = require('express').Router()
 const locationsService = require('./locations.service')
+const passport = require('passport')
+const authorizationMiddleware = require('../authorization/authorization.middleware')
 
 // Create routes at Presentation Layer = use POST method route
 router.post('/locations', async (req, res) => {
@@ -20,8 +22,8 @@ router.put('/locations/:id', async (req,res)=>{
 	try {
 		console.log("Coucou")
 		//const location = await locationsService.updateLocation(req.params.id, {...req.body, endDate:new Date(req.body.endDate), startDate: new Date(req.body.startDate)})
-		console.log(req.body)
 		const location = await locationsService.updateLocation(req.params.id, req.body)
+		
 		return res.status(200).send(location)
 	} catch(e) {
 		return res.status(400).send("Bad Request, Try again !")
@@ -30,13 +32,16 @@ router.put('/locations/:id', async (req,res)=>{
 
 // Request (Get All: /locations , Get One: /locations/:id)
 // Retrieve data of all locations
-router.get('/locations', async (req, res) => {
-	try {
-		const allLocations = await locationsService.findAll()
-		return res.status(200).send(allLocations)
-	} catch(e) {
-		return res.status(400).send("Bad Request, Try again !")
-	}
+router.get('/locations', 
+	passport.authenticate('local',{session:false}),
+	authorizationMiddleware.canAccess(['admin','modo']),
+	async (req, res) => {
+		try {
+			const allLocations = await locationsService.findAll()
+			return res.status(200).send(allLocations)
+		} catch(e) {
+			return res.status(400).send("Bad Request, Try again !")
+		}
 })
 
 // Retrieve data of one location

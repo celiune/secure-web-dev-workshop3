@@ -24,11 +24,8 @@ async function addLocation(data){
 }
 
 async function updateLocation(id, update){
-	const location = await findOne(id)
-	console.log("test")
-	console.log(update)
-	console.log(location)
-	return Location.updateOne(id, update)
+	await Location.findOneAndUpdate(id, update)
+	return Location.findOne(id)
 }
 
 async function deleteLocation(id){
