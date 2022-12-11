@@ -23,5 +23,10 @@ async function findOne(id){
 	return user
 }
 
+async function updateUser(id, update){
+	await User.findOneAndUpdate(id, update)
+	return User.findOne(id)
+}
 
-module.exports = {register, checkPassword, findOne}
+
+module.exports = {register, checkPassword, findOne, updateUser}

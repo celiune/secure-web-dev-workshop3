@@ -20,4 +20,13 @@ router.get('/users/me', async(req,res) => {
 	return res.status(200).send(me)
 })
 
+router.put('/users/me', async (req,res)=>{
+	try {
+		const me = await usersService.updateUser(req.user, req.body)
+		return res.status(200).send(me)
+	} catch(e) {
+		return res.status(400).send("Bad Request, Try again !")
+	}
+})
+
 module.exports = router
