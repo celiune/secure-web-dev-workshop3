@@ -33,4 +33,10 @@ async function deleteUser(id){
     return user.remove()
 }
 
-module.exports = {register, checkPassword, findOne, updateUser, deleteUser}
+async function findAll () {
+	const users = await User.find()
+    if (!users) throw new Error("Users not found")
+    return users
+}
+
+module.exports = {register, checkPassword, findOne, updateUser, deleteUser, findAll}

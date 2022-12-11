@@ -29,7 +29,6 @@ router.put('/users/me', async (req,res)=>{
 	}
 })
 
-
 router.delete('/users/me', async (req,res)=>{
     try{
         const me = await usersService.deleteUser(req.user)
@@ -38,4 +37,17 @@ router.delete('/users/me', async (req,res)=>{
         return res.status(400).send("Bad Request, Try again !")
     }
 })
+
+router.get('/users', 
+	passport.authenticate('local',{session:false}),
+	authorizationMiddleware.canAccess(['admin','modo']),
+	async (req, res) => {
+		try {
+			const allUsers = await usersService.findAll()
+			return res.status(200).send(allUsers)
+		} catch(e) {
+			return res.status(400).send("Bad Request, Try again !")
+		}
+})
+
 module.exports = router
