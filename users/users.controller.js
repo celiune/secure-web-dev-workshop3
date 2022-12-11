@@ -29,4 +29,13 @@ router.put('/users/me', async (req,res)=>{
 	}
 })
 
+
+router.delete('/users/me', async (req,res)=>{
+    try{
+        const me = await usersService.deleteUser(req.user)
+        return res.status(200).send(me)
+    } catch(e) {
+        return res.status(400).send("Bad Request, Try again !")
+    }
+})
 module.exports = router

@@ -28,5 +28,9 @@ async function updateUser(id, update){
 	return User.findOne(id)
 }
 
+async function deleteUser(id){
+    const user = await findOne(id)
+    return user.remove()
+}
 
-module.exports = {register, checkPassword, findOne, updateUser}
+module.exports = {register, checkPassword, findOne, updateUser, deleteUser}
