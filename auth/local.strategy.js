@@ -1,4 +1,4 @@
-const { use } = require('passport');
+const { model } = require('mongoose');
 const passport = require('passport')
 const LocalStrategy = require('passport-local')
 const usersService = require('../users/users.service')
@@ -17,4 +17,6 @@ passport.use(new LocalStrategy) (
             }
         }    
 	}
-	);
+);
+
+module.exports = passport
