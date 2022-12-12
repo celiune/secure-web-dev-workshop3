@@ -3,7 +3,7 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local')
 const usersService = require('../users/users.service')
 
-passport.use(new LocalStrategy) (
+passport.use(new LocalStrategy (
 	async function(username, password, done){
         try{
             const user = await usersService.checkPassword(username, password)
@@ -17,6 +17,6 @@ passport.use(new LocalStrategy) (
             }
         }    
 	}
-);
+));
 
 module.exports = passport

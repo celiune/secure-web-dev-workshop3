@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const passport = require('passport')
 const usersService = require('./users.service')
+const authorizationMiddleware = require ('../authorization/authorization.middleware')
 
 router.post('/users/register', async(req,res) => {
     const user = await usersService.register(req.body?.username,

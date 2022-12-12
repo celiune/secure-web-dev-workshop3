@@ -6,7 +6,7 @@ const port = 3000
 
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
-//const localStrategy = require('./auth/local.strategy')
+const localStrategy = require('./auth/local.strategy')
 
 // dotenv: It loads environment variables from a .env file.
 require('dotenv').config()
@@ -15,7 +15,7 @@ mongoose.connect(process.env.MONGO_URI).then(() => {console.log('Connected!') })
 
 app.use(bodyParser.json())
 app.use(locationController)
-app.use('/users',userController)
+app.use(userController)
 
 app.get('/', (req, res) => {
 	res.status(200).send('Hello World!')
