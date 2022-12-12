@@ -12,7 +12,9 @@ router.post('/users/register', async(req,res) => {
 router.post('/users/login',
     passport.authenticate('local',{session: false}),
     async (req,res) => {
-        res.status(200).send(req.user)
+        const userId = req.user?._id;
+        const token = await usersService.generateJWT(userId);
+        res.status(200).send(token)
     }
 )
 
@@ -50,5 +52,10 @@ router.get('/users',
 			return res.status(400).send("Bad Request, Try again !")
 		}
 })
+
+// JWT middleware
+router.use('/users/me',passport.authenticate('jwt', {
+    session:false, failureRedirect:'/users/login'
+}));
 
 module.exports = router
