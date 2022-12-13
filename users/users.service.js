@@ -1,8 +1,9 @@
 const User = require('./users.model')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken');
 
 async function register (username,password){
-    const hash = await bcrypt.hash(password,10)
+    const hash = await bcrypt.hash(password,10) //salt = 10
     const user = new User({username, password:hash})
     return await user.save()
 }
@@ -18,14 +19,19 @@ async function checkPassword(username, password){
 }
 
 async function findOne(id){
-	const user = await User.findById(id)
+	const user = await User.findById({'_id':id})
 	if (!user) throw new Error("User not found")
 	return user
 }
 
-async function updateUser(id, update){
-	await User.findOneAndUpdate(id, update)
-	return User.findOne(id)
+async function updateUser(req, res){
+    let obj = {
+        username: req.body.username,
+        password: await bcrypt.hash(req.body.password, 10),
+        role: req.user.role
+    }
+    const user = await User.findOneAndUpdate(req.user._id, obj, {new:true});
+    res.send(user)
 }
 
 async function deleteUser(id){
@@ -34,9 +40,25 @@ async function deleteUser(id){
 }
 
 async function findAll () {
-	const users = await User.find()
+	const users = await User.find().select('username').select('role')
     if (!users) throw new Error("Users not found")
     return users
 }
 
-module.exports = {register, checkPassword, findOne, updateUser, deleteUser, findAll}
+async function verify(username, password) {
+    try {
+        const user = await User.findOne({username});
+        const match = await bcrypt.compare(password, user.password);
+        return match;
+    } catch (err) {
+        console.log("[!] Error");
+        console.error(err);
+        return null;
+    }
+}
+
+async function generateJWT(username) {
+    return jwt.sign({sub:username}, process.env.JWT_SECRET);
+}
+
+module.exports = {register, checkPassword, findOne, updateUser, deleteUser, findAll, verify, generateJWT}

@@ -5,6 +5,10 @@ const router = require('express').Router()
 const locationsService = require('./locations.service')
 const passport = require('passport')
 const authorizationMiddleware = require('../authorization/authorization.middleware')
+require('../auth/local.strategy');
+require('../auth/jwt.stategy');
+
+router.use('/locations', passport.authenticate('jwt', { session: false }));
 
 // Create routes at Presentation Layer = use POST method route
 router.post('/locations', async (req, res) => {

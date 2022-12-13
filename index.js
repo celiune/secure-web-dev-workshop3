@@ -6,14 +6,16 @@ const port = 3000
 
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
-const localStrategy = require('./auth/local.strategy')
+const passport = require('passport')
 
 // dotenv: It loads environment variables from a .env file.
 require('dotenv').config()
 mongoose.connect(process.env.MONGO_URI).then(() => {console.log('Connected!') })
 
-
+app.use(express.json())
 app.use(bodyParser.json())
+app.use(passport.initialize())
+
 app.use(locationController)
 app.use(userController)
 
@@ -24,5 +26,3 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
 	console.log(`API listening on port ${port}, visit http://localhost:${port}/`)
 })
-
-
