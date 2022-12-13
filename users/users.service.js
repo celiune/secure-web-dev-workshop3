@@ -45,18 +45,6 @@ async function findAll () {
     return users
 }
 
-async function verify(username, password) {
-    try {
-        const user = await User.findOne({username});
-        const match = await bcrypt.compare(password, user.password);
-        return match;
-    } catch (err) {
-        console.log("[!] Error");
-        console.error(err);
-        return null;
-    }
-}
-
 async function generateJWT(username) {
     return jwt.sign({sub:username}, process.env.JWT_SECRET);
 }
